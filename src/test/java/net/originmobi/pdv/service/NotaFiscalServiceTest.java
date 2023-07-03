@@ -17,6 +17,9 @@ import static org.mockito.Mockito.verify;
 import org.mockito.Mockito;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -185,7 +188,7 @@ public class NotaFiscalServiceTest {
 	}
 	
 	@Test
-	public void testSalvaXml() {	
+	public void testSalvaXml() throws IOException {	
 		assertNotNull(notaFiscal);
 		//A intancia de NotaFiscal existe
 		

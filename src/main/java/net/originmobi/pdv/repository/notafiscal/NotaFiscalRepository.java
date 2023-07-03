@@ -1,33 +1,21 @@
 package net.originmobi.pdv.repository.notafiscal;
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 import java.sql.Date;
 
 import javax.transaction.Transactional;
 
-<<<<<<< HEAD
 import org.springframework.context.annotation.ComponentScan;
-=======
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-<<<<<<< HEAD
 import org.springframework.stereotype.Component;
-=======
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 
 import net.originmobi.pdv.model.NotaFiscal;
 import net.originmobi.pdv.model.NotaFiscalTotais;
 
-<<<<<<< HEAD
 @Component
-=======
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 public interface NotaFiscalRepository extends JpaRepository<NotaFiscal, Long> {
 
 	@Transactional

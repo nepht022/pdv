@@ -23,7 +23,6 @@ import net.originmobi.pdv.model.FreteTipo;
 import net.originmobi.pdv.model.NotaFiscal;
 import net.originmobi.pdv.model.Pessoa;
 import net.originmobi.pdv.model.Produto;
-<<<<<<< HEAD
 import net.originmobi.pdv.repository.EmpresaParametrosRepository;
 import net.originmobi.pdv.repository.EmpresaRepository;
 import net.originmobi.pdv.service.CidadeService;
@@ -31,10 +30,6 @@ import net.originmobi.pdv.service.EnderecoService;
 import net.originmobi.pdv.service.PessoaService;
 import net.originmobi.pdv.service.ProdutoService;
 import net.originmobi.pdv.service.RegimeTributarioService;
-=======
-import net.originmobi.pdv.service.PessoaService;
-import net.originmobi.pdv.service.ProdutoService;
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 import net.originmobi.pdv.service.notafiscal.FreteTipoService;
 import net.originmobi.pdv.service.notafiscal.NotaFiscalItemService;
 import net.originmobi.pdv.service.notafiscal.NotaFiscalService;
@@ -46,11 +41,7 @@ public class NotaFiscalController {
 	private static final String NOTAFISCAL_LIST = "notafiscal/list";
 
 	private static final String NOTAFISCAL_FORM = "notafiscal/form";
-<<<<<<< HEAD
 	
-=======
-
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 	@Autowired
 	private NotaFiscalService notasFiscais;
 

@@ -76,7 +76,6 @@
 			<artifactId>thymeleaf-extras-springsecurity4</artifactId>
 		</dependency>
 		<dependency>
-<<<<<<< HEAD
 			<groupId>com.ibm.icu</groupId>
 			<artifactId>icu4j</artifactId>
 			<version>51.3</version>
@@ -87,19 +86,13 @@
 			<version>2.6</version>
 		</dependency>
 		<dependency>
-=======
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 			<groupId>nz.net.ultraq.thymeleaf</groupId>
 			<artifactId>thymeleaf-layout-dialect</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
-<<<<<<< HEAD
 			<version>6.17.0</version>
-=======
-			<version>6.5.1</version>
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 		</dependency>
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
@@ -113,7 +106,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<!-- … -->
-<<<<<<< HEAD
 
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -145,8 +137,6 @@
 		    <version>1.14.5</version>
 		    <scope>test</scope>
 		</dependency>
-=======
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 	</dependencies>
 
 	<build>

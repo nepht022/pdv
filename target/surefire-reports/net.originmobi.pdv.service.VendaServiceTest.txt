@@ -1,0 +1,29 @@
+-------------------------------------------------------------------------------
+Test set: net.originmobi.pdv.service.VendaServiceTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 5, Skipped: 0, Time elapsed: 2.05 s <<< FAILURE! - in net.originmobi.pdv.service.VendaServiceTest
+removeProdutoDeveRetornarOk_seVendaAberta(net.originmobi.pdv.service.VendaServiceTest)  Time elapsed: 0 s  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: java.lang.IllegalStateException: Cannot load configuration class: net.originmobi.pdv.PdvApplication
+Caused by: java.lang.NoClassDefFoundError: Could not initialize class org.springframework.cglib.proxy.Enhancer
+
+abreVendaDeveRetornarCodigoDiferente_seVendaNova(net.originmobi.pdv.service.VendaServiceTest)  Time elapsed: 0 s  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: java.lang.IllegalStateException: Cannot load configuration class: net.originmobi.pdv.PdvApplication
+Caused by: java.lang.NoClassDefFoundError: Could not initialize class org.springframework.cglib.proxy.Enhancer
+
+abreVendaDeveRetornarCodigoNaoNulo(net.originmobi.pdv.service.VendaServiceTest)  Time elapsed: 0 s  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: java.lang.IllegalStateException: Cannot load configuration class: net.originmobi.pdv.PdvApplication
+Caused by: java.lang.NoClassDefFoundError: Could not initialize class org.springframework.cglib.proxy.Enhancer
+
+removeProdutoDeveRetornarVendaFechada_seVendaFechada(net.originmobi.pdv.service.VendaServiceTest)  Time elapsed: 0 s  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: java.lang.IllegalStateException: Cannot load configuration class: net.originmobi.pdv.PdvApplication
+Caused by: java.lang.NoClassDefFoundError: Could not initialize class org.springframework.cglib.proxy.Enhancer
+
+abreVendaDeveRetornarMesmoCodigo_seVendaExiste(net.originmobi.pdv.service.VendaServiceTest)  Time elapsed: 0 s  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: java.lang.IllegalStateException: Cannot load configuration class: net.originmobi.pdv.PdvApplication
+Caused by: java.lang.NoClassDefFoundError: Could not initialize class org.springframework.cglib.proxy.Enhancer
+

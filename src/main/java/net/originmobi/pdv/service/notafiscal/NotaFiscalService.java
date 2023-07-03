@@ -1,17 +1,11 @@
 package net.originmobi.pdv.service.notafiscal;
 
 import java.io.File;
-<<<<<<< HEAD
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
-=======
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
@@ -19,10 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-<<<<<<< HEAD
 import org.jfree.util.Log;
-=======
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -55,7 +46,6 @@ public class NotaFiscalService {
 	@Autowired
 	private PessoaService pessoas;
 
-<<<<<<< HEAD
 	public static final String CAMINHO_XML = "\\src\\main\\resources\\xmlNfe";
 
 	public String diretorio;
@@ -74,11 +64,6 @@ public class NotaFiscalService {
 		this.notaTotais = mockNFTS;
 		this.notasFiscais = mockNFR;
 	}
-=======
-	private LocalDate dataAtual;
-
-	private static final String CAMINHO_XML = "/src/main/resources/xmlNfe/";
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 
 	public List<NotaFiscal> lista() {
 		return notasFiscais.findAll();
@@ -90,17 +75,10 @@ public class NotaFiscalService {
 		Optional<Pessoa> pessoa = pessoas.buscaPessoa(coddesti);
 
 		if (!empresa.isPresent())
-<<<<<<< HEAD
 			throw new IllegalArgumentException("Nenhuma empresa cadastrada, verifique");
 
 		if (!pessoa.isPresent())
 			throw new IllegalArgumentException("Favor, selecione o destinatário");
-=======
-			throw new RuntimeException("Nenhuma empresa cadastrada, verifique");
-
-		if (!pessoa.isPresent())
-			throw new RuntimeException("Favor, selecione o destinatário");
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 
 		// prepara informações iniciais da nota fiscal
 		FreteTipo frete = new FreteTipo();
@@ -111,19 +89,11 @@ public class NotaFiscalService {
 		int serie = empresa.map(Empresa::getParametro).get().getSerie_nfe();
 
 		if (empresa.map(Empresa::getParametro).get().getSerie_nfe() == 0)
-<<<<<<< HEAD
 			throw new IllegalArgumentException("Não existe série cadastrada para o modelo 55, verifique");
 
 		// opção 1 é emissão normal, as outras opções (2, 3, 4, 5) são para contigência
 		int tipoEmissao = 1;
 		LocalDate dataAtual = LocalDate.now();
-=======
-			throw new RuntimeException("Não existe série cadastrada para o modelo 55, verifique");
-
-		// opção 1 é emissão normal, as outras opções (2, 3, 4, 5) são para contigência
-		int tipoEmissao = 1;
-		dataAtual = LocalDate.now();
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 		Date cadastro = Date.valueOf(dataAtual);
 		String verProc = "0.0.1-beta";
 		int tipoAmbiente = empresa.get().getParametro().getAmbiente();
@@ -132,13 +102,8 @@ public class NotaFiscalService {
 		NotaFiscalTotais totais = new NotaFiscalTotais(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 		try {
 			notaTotais.cadastro(totais);
-<<<<<<< HEAD
 		} catch (RuntimeException e) {
 			throw new IllegalArgumentException("Erro ao cadastrar a nota, chame o suporte");
-=======
-		} catch (Exception e) {
-			throw new RuntimeException("Erro ao cadastrar a nota, chame o suporte");
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 		}
 
 		// cadastra a nota fiscal
@@ -153,13 +118,8 @@ public class NotaFiscalService {
 			nota = notasFiscais.save(notaFiscal);
 
 		} catch (Exception e) {
-<<<<<<< HEAD
 			Log.debug("Erro " + e);
 			throw new IllegalArgumentException("Erro ao cadastrar a nota, chame o suporte");
-=======
-			System.out.println("Erro " + e);
-			throw new RuntimeException("Erro ao cadastrar a nota, chame o suporte");
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 		}
 
 		return nota.getCodigo().toString();
@@ -191,28 +151,17 @@ public class NotaFiscalService {
 		try {
 			contexto = new File(".").getCanonicalPath();
 		} catch (Exception e) {
-<<<<<<< HEAD
 			Log.debug("Erro ao pegar o contexto " + e);
 		}
 
 		DIRETORIO = Paths.get(contexto + CAMINHO_XML);
 		diretorio = DIRETORIO.toString();
-=======
-			System.out.println("Erro ao pegar o contexto " + e);
-		}
-
-		DIRETORIO = Paths.get(contexto + CAMINHO_XML);
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 
 		try {
 			PrintWriter out = new PrintWriter(new FileWriter(DIRETORIO.toString() + "/" + chaveNfe + ".xml"));
 			out.write(xml);
 			out.close();
-<<<<<<< HEAD
 			Log.debug("Arquivo gravado com sucesso em " + DIRETORIO.toString());
-=======
-			System.out.println("Arquivo gravado com sucesso em " + DIRETORIO.toString());
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -222,21 +171,16 @@ public class NotaFiscalService {
 	 * responsável por remover o xml quando o mesmo já existe na nota que foi
 	 * regerada
 	 */
-<<<<<<< HEAD
 	public void cleanUp(Path path) throws IOException {
 		Files.delete(path);
 	}
 
 	public boolean removeXml(String chave_acesso) {
-=======
-	public void removeXml(String chave_acesso) {
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 		String contexto = "";
 
 		try {
 			contexto = new File(".").getCanonicalPath();
 		} catch (Exception e) {
-<<<<<<< HEAD
 			Log.debug("Erro ao pegar o contexto " + e);
 		}
 
@@ -251,19 +195,6 @@ public class NotaFiscalService {
 			return false;
 		}
 		return true;
-=======
-			System.out.println("Erro ao pegar o contexto " + e);
-		}
-
-		try {
-			File file = new File(contexto + CAMINHO_XML + "/" + chave_acesso + ".xml");
-			System.out.println("XML para deletar " + file.toString());
-			if (file.exists())
-				file.delete();
-		} catch (Exception e) {
-			System.out.println("Erro ao deletar XML " + e);
-		}
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 	}
 
 	public Optional<NotaFiscal> busca(Long codnota) {
@@ -285,8 +216,4 @@ public class NotaFiscalService {
 	public int totalNotaFiscalEmitidas() {
 		return notasFiscais.totalNotaFiscalEmitidas();
 	}
-<<<<<<< HEAD
-=======
-
->>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 }
