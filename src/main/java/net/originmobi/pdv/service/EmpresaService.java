@@ -2,11 +2,16 @@ package net.originmobi.pdv.service;
 
 import java.sql.Date;
 import java.time.LocalDate;
+<<<<<<< HEAD
 import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Inject;
 
+=======
+import java.util.Optional;
+
+>>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -39,6 +44,7 @@ public class EmpresaService {
 	private EnderecoService enderecos;
 
 	public void cadastro(Empresa empresa) {
+<<<<<<< HEAD
 		empresas.save(empresa);
 	}
 
@@ -53,6 +59,22 @@ public class EmpresaService {
 		}
 ;
 		
+=======
+
+		try {
+			empresas.save(empresa);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+
+	public Optional<Empresa> verificaEmpresaCadastrada() {
+		Optional<Empresa> empresa = empresas.buscaEmpresaCadastrada();
+
+		if (empresa.isPresent())
+			return empresa;
+
+>>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 		Optional<Empresa> empresaOptiona = Optional.empty();
 
 		return empresaOptiona;

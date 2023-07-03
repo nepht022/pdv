@@ -11,11 +11,15 @@ import net.originmobi.pdv.service.notafiscal.NotaFiscalService;
 
 @Component
 public class GeraXmlNfe {
+<<<<<<< HEAD
 
 	public GeraXmlNfe criar(){
 		return new GeraXmlNfe();
 	}
 
+=======
+	
+>>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
 	@Autowired
 	private NotaFiscalService nfServer;
 
@@ -26,6 +30,7 @@ public class GeraXmlNfe {
 		XStream valor = new XStream(new DomDriver());
 		ConversorXmlNfe conversor = new ConversorXmlNfe();
 		AssinaXML assina = new AssinaXML();
+<<<<<<< HEAD
 
 		valor.registerConverter(conversor);
 
@@ -49,3 +54,29 @@ public class GeraXmlNfe {
 		return chaveNfe;
 	}
 }
+=======
+		
+		valor.registerConverter(conversor);
+		
+		valor.alias("enviNFe", NotaFiscal.class);
+		
+		String xml = valor.toXML(notaFiscal);
+		
+		xml = assina.assinaXML(xml);
+		
+		//pega a chave da nfe
+		String chaveNfe = conversor.retornaChaveNfe();
+		
+		nfServer = new NotaFiscalService();
+		
+		if(notaFiscal.getChave_acesso() != null) {
+			nfServer.removeXml(notaFiscal.getChave_acesso());
+		}
+		
+		nfServer.salvaXML(xml, chaveNfe);
+		
+		return chaveNfe;
+	}
+}
+
+>>>>>>> 8ed96d5d727adec0606a912a0b4a2c65bc0d54fd
