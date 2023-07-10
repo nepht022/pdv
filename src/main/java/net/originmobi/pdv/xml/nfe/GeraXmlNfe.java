@@ -10,12 +10,7 @@ import net.originmobi.pdv.model.NotaFiscal;
 import net.originmobi.pdv.service.notafiscal.NotaFiscalService;
 
 @Component
-public class GeraXmlNfe {
-
-	public GeraXmlNfe criar(){
-		return new GeraXmlNfe();
-	}
-
+public class GeraXmlNfe {	
 	@Autowired
 	private NotaFiscalService nfServer;
 

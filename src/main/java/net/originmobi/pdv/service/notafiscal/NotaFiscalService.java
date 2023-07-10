@@ -33,6 +33,8 @@ import net.originmobi.pdv.xml.nfe.GeraXmlNfe;
 
 @Service
 public class NotaFiscalService {
+	@Autowired
+	private GeraXmlNfe geraXmlNfe;
 
 	@Autowired
 	private NotaFiscalRepository notasFiscais;
@@ -57,6 +59,22 @@ public class NotaFiscalService {
 		this.notasFiscais = mockNFR;
 	}
 
+	public NotaFiscalService(NotaFiscalRepository mockNFR, GeraXmlNfe mockXMLNFE) {
+		this.notasFiscais = mockNFR;
+		this.geraXmlNfe = mockXMLNFE;
+	}
+
+	public NotaFiscalService(EmpresaService mockES, PessoaService mockPS) {
+		this.pessoas = mockPS;
+		this.empresas = mockES;
+	}
+
+	public NotaFiscalService(EmpresaService mockES, PessoaService mockPS, NotaFiscalRepository mockNFR) {
+		this.pessoas = mockPS;
+		this.empresas = mockES;
+		this.notasFiscais = mockNFR;
+	}
+
 	public NotaFiscalService(PessoaService mockPS, EmpresaService mockES, NotaFiscalTotaisServer mockNFTS,
 			NotaFiscalRepository mockNFR) {
 		this.pessoas = mockPS;
@@ -73,12 +91,6 @@ public class NotaFiscalService {
 	public String cadastrar(Long coddesti, String natureza, NotaFiscalTipo tipo) {
 		Optional<Empresa> empresa = empresas.verificaEmpresaCadastrada();
 		Optional<Pessoa> pessoa = pessoas.buscaPessoa(coddesti);
-
-		if (!empresa.isPresent())
-			throw new IllegalArgumentException("Nenhuma empresa cadastrada, verifique");
-
-		if (!pessoa.isPresent())
-			throw new IllegalArgumentException("Favor, selecione o destinatário");
 
 		// prepara informações iniciais da nota fiscal
 		FreteTipo frete = new FreteTipo();
@@ -202,8 +214,6 @@ public class NotaFiscalService {
 	}
 
 	public void emitir(NotaFiscal notaFiscal) {
-		GeraXmlNfe geraXmlNfe = new GeraXmlNfe();
-
 		// gera o xml e pega a chave de acesso do mesmo
 		String chaveNfe = geraXmlNfe.gerarXML(notaFiscal);
 

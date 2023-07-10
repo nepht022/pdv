@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -18,8 +17,6 @@ import org.mockito.Mockito;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -160,22 +157,10 @@ public class NotaFiscalServiceTest {
 		
 		verify(mockNFR).totalNotaFiscalEmitidas();
 		
+		assertNotNull(nfs.totalNotaFiscalEmitidas());
+		assertTrue(nfs.totalNotaFiscalEmitidas()>0);
 		assertEquals(5, nfs.totalNotaFiscalEmitidas());
 		//Verificando o total de notas fiscais emitidas
-	}
-	
-	@Test
-	public void testEmite() {
-		assertNotNull(this.notaFiscal);
-		//Nota fiscal foi criada
-		
-		mockXMLNFE = Mockito.mock(GeraXmlNfe.class);
-		Mockito.when(mockXMLNFE.gerarXML(any(NotaFiscal.class))).thenReturn("chave");
-		
-		mockXMLNFE.gerarXML(notaFiscal);
-		verify(mockXMLNFE).gerarXML(notaFiscal);
-		
-		//NFService.emitir(notaFiscal);		
 	}
 	
 	@Test
@@ -185,6 +170,12 @@ public class NotaFiscalServiceTest {
 		
 		assertEquals(Integer.valueOf(0), NFService.geraDV("DV15"));
 		//Variavel 'Resto' é 1, retornando 0
+		
+		assertEquals(Integer.valueOf(0), NFService.geraDV("DV556435768"));
+		//Testando o condicional de peso == 10
+		
+		assertEquals(Integer.valueOf(0), NFService.geraDV(null));
+		//Testando o catch do metodo
 	}
 	
 	@Test
@@ -215,8 +206,10 @@ public class NotaFiscalServiceTest {
 			fail(e.getMessage());
 			//O arquivo nao existe
 		}
+		assertNotNull(notaFiscal.getChave_acesso());
+		//Verifica se a nota fiscal temchave de acesso
 		assertTrue(NFService.removeXml(notaFiscal.getChave_acesso()));
-		//O retorna 'true' porque o arquivo foi removido com sucesso
+		//Retorna 'true' porque o arquivo foi removido com sucesso		
 	}
 	
 	@Test
@@ -239,6 +232,66 @@ public class NotaFiscalServiceTest {
 	}
 	
 	@Test
+	public void testCadastroSemSerie() {
+		EmpresaService mockES = Mockito.mock(EmpresaService.class);
+		empresa.getParametro().setSerie_nfe(0);
+		java.util.Optional<Empresa> empresaOp = java.util.Optional.of(empresa);
+		
+		PessoaService mockPS = Mockito.mock(PessoaService.class);
+		java.util.Optional<Pessoa> pessoaOp = java.util.Optional.of(pessoa);
+				
+		NotaFiscalService nfs = new NotaFiscalService(mockES, mockPS);
+		
+		Mockito.when(mockPS.buscaPessoa(anyLong())).thenReturn(pessoaOp);						
+		Mockito.when(mockES.verificaEmpresaCadastrada()).thenReturn(empresaOp);
+		
+		assertEquals(0, empresa.getParametro().getSerie_nfe());
+		//Verifica se a serie realmente ta null
+		assertThrows(IllegalArgumentException.class, () -> nfs.cadastrar(1l, "natureza", NotaFiscalTipo.valueOf("ENTRADA")));
+		//Não existe série cadastrada para o modelo ou falta alguma informação
+
+	}
+	
+	@Test
+	public void testCadastroSemSave() {
+		PessoaService mockPS = Mockito.mock(PessoaService.class);
+		java.util.Optional<Pessoa> pessoaOp = java.util.Optional.of(pessoa);
+		
+		EmpresaService mockES = Mockito.mock(EmpresaService.class);
+		java.util.Optional<Empresa> empresaOp = java.util.Optional.of(empresa);
+		
+		NotaFiscalTotaisServer mockNFTS = Mockito.mock(NotaFiscalTotaisServer.class);
+		Mockito.when(mockNFTS.cadastro(any(NotaFiscalTotais.class))).thenReturn(notaFiscalTot);
+		
+		NotaFiscalService nfs = new NotaFiscalService(mockPS, mockES,  mockNFTS, mockNFR);
+		
+		Mockito.when(mockPS.buscaPessoa(anyLong())).thenReturn(pessoaOp);						
+		Mockito.when(mockES.verificaEmpresaCadastrada()).thenReturn(empresaOp);
+		
+		assertThrows(IllegalArgumentException.class, () -> nfs.cadastrar(1l, "natureza", NotaFiscalTipo.valueOf("ENTRADA")));
+		//exceção lançada ao tentar salvar uma nota fical em um repositorio de nota fiscal null
+	}
+	
+	@Test
+	public void testCadastroSemTot() {
+		PessoaService mockPS = Mockito.mock(PessoaService.class);
+		java.util.Optional<Pessoa> pessoaOp = java.util.Optional.of(pessoa);
+		
+		EmpresaService mockES = Mockito.mock(EmpresaService.class);
+		java.util.Optional<Empresa> empresaOp = java.util.Optional.of(empresa);
+		
+		mockNFR = Mockito.mock(NotaFiscalRepository.class);
+		Mockito.when(mockNFR.save(any(NotaFiscal.class))).thenReturn(notaFiscal);
+		
+		NotaFiscalService nfs = new NotaFiscalService(mockES, mockPS, mockNFR);
+		
+		Mockito.when(mockPS.buscaPessoa(anyLong())).thenReturn(pessoaOp);						
+		Mockito.when(mockES.verificaEmpresaCadastrada()).thenReturn(empresaOp);
+		assertThrows(IllegalArgumentException.class, () -> nfs.cadastrar(1l, "natureza", NotaFiscalTipo.valueOf("ENTRADA")));
+		//exceção lançada ao tentar cadastrar um nota fiscal totais a um nota fiscal totais server
+	}
+	
+	@Test
 	public void testCadastro() {		
 		assertThrows(NullPointerException.class, ()->NFService.cadastrar(1l, "natureza", NotaFiscalTipo.valueOf("ENTRADA")));
 		//Variavel empresa é nula, logo, exceção lançada
@@ -255,24 +308,35 @@ public class NotaFiscalServiceTest {
 		NotaFiscalTotaisServer mockNFTS = Mockito.mock(NotaFiscalTotaisServer.class);
 		Mockito.when(mockNFTS.cadastro(any(NotaFiscalTotais.class))).thenReturn(notaFiscalTot);
 		
-		//Pessoa existe e Empresa não
-		Mockito.when(mockPS.buscaPessoa(anyLong())).thenReturn(pessoaOp);						
-		Mockito.when(mockES.verificaEmpresaCadastrada()).thenReturn(null);
 		NotaFiscalService nfs = new NotaFiscalService(mockPS, mockES,  mockNFTS, mockNFR);
-		assertThrows(NullPointerException.class, () -> nfs.cadastrar(1l, "natureza", NotaFiscalTipo.valueOf("ENTRADA")));
 		
-		//Empresa existe e Pessoa não
-		Mockito.when(mockPS.buscaPessoa(anyLong())).thenReturn(null);						
-		Mockito.when(mockES.verificaEmpresaCadastrada()).thenReturn(empresaOp);
-		assertThrows(NullPointerException.class, () -> nfs.cadastrar(1l, "natureza", NotaFiscalTipo.valueOf("ENTRADA")));
-		
-		//Empresa e Pessoa existem
 		Mockito.when(mockPS.buscaPessoa(anyLong())).thenReturn(pessoaOp);						
 		Mockito.when(mockES.verificaEmpresaCadastrada()).thenReturn(empresaOp);
 		String id = nfs.cadastrar(1l, "natureza", NotaFiscalTipo.valueOf("ENTRADA"));
 		
 		assertEquals(id, notaFiscal.getCodigo().toString());
+		//Verifica a igualdade do codigo da nota fical com o valor da variavel
 		assertEquals(notaFiscal.getTipo_ambiente(), empresaOp.get().getParametro().getAmbiente());
+		//Verifica a igualdade do tipo de ambiente da nota fiscal e da empresa opcional
 	}
 	
+	@Test
+	public void testEmite() {
+		mockXMLNFE = Mockito.mock(GeraXmlNfe.class);
+		Mockito.when(mockXMLNFE.gerarXML(any(NotaFiscal.class))).thenReturn(notaFiscal.getChave_acesso());
+		
+		mockNFR = Mockito.mock(NotaFiscalRepository.class);
+		Mockito.when(mockNFR.save(any(NotaFiscal.class))).thenReturn(notaFiscal);
+		
+		NotaFiscalService nfs = new NotaFiscalService(mockNFR, mockXMLNFE);
+		
+		nfs.emitir(notaFiscal);
+		
+		assertNotNull(mockXMLNFE.gerarXML(new NotaFiscal()));
+		//Verifica se o mock nao retorna um null
+		assertFalse(mockXMLNFE.gerarXML(new NotaFiscal()).length()<1);
+		//Verifica se o mock retorna uma chave valida
+		assertEquals(notaFiscal.getChave_acesso(), mockXMLNFE.gerarXML(new NotaFiscal()));
+		//Verifica se o mock esta retornando a chave que deveria
+	}
 }
